@@ -1,0 +1,72 @@
+
+syntax = "proto3";
+
+package test.logic.CoffeeMaker;
+
+option java_package = "test.logic.CoffeeMaker";
+option java_multiple_files = true;
+
+import "google/protobuf/any.proto";
+
+service CoffeeShopService {
+  rpc CoffeeReady(HelloRequest) returns (HelloResponse);
+  rpc MakeCoffee(CoffeeInstructionsRequest) returns (CoffeeResponse);
+  rpc CleanCoffeeMachine(CoffeeCleaningRequest) returns (CoffeeCleaningResponse);
+  rpc MachineAudit(MachineAuditRequest) returns (MachineAuditResponse);
+  rpc OrderOfMenu(MenuNumberOrNameRequest) returns (MenuNumberOrNameResponse);
+}
+
+message HelloRequest {
+  string ClientName = 1;
+  string Order = 2;
+}
+
+message MenuNumberOrNameRequest {
+  oneof Coffee {
+    string menuItem = 1;
+    uint32 menuItemID = 2;
+  }
+}
+
+message MenuNumberOrNameResponse {
+    string result = 1;
+}
+
+message HelloResponse {
+  string ready = 1;
+}
+
+message CoffeeInstructionsRequest {
+  uint32 sugarLumps = 1;
+  google.protobuf.Any milk = 3;
+  repeated string ingredients= 4;
+}
+
+message CoffeeResponse {
+  repeated string outputList = 1;
+}
+
+message CoffeeCleaningRequest {
+  string name = 1;
+  string cleanMode = 2;
+}
+
+message CoffeeCleaningResponse {
+  CoffeeMachine result = 1;
+}
+
+message CoffeeMachine {
+  string name = 1;
+  string status = 2;
+  string dateLastCleaned = 3;
+}
+
+message MachineAuditRequest {
+  string name = 1;
+  string status = 2;
+  string dateLastCleaned = 3;
+}
+
+message MachineAuditResponse {
+  string result = 1;
+}
