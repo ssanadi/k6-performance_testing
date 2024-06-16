@@ -16,7 +16,7 @@ export const options = {
     ,
   throw: true
 };
-const serviceName = "CleanCoffeeMachine";
+const serviceName = "MachineAudit";
 const client = new grpc.Client();
 client.load(['../proto'], 'CoffeeMaker.proto');
 
@@ -26,20 +26,20 @@ export default () => {
     plaintext: true,
   });
 
-  const data = { "name":"Machine one", "cleanMode":"Deep"}
+  const data = { "name":"Machine Barista", "status":"DeepCleaned", "dateLastCleaned":"2024-06-13T17:05:46Z"}
   
-  describe('Run CleanCoffeeMachine test',() => {
+  describe('Run Machine Audit request test',() => {
     const response = client.invoke('test.logic.CoffeeMaker.CoffeeShopService/' + serviceName, data);
 
     expect(Number(response.status), 'response status').to.equal(Number(grpc.StatusOK));
-    expect(response.message.result.status, 'response contains').to.equal('cleaned to Deep');
+    expect(response.message.result, 'response contains').to.equal('The Audit has been recorded');
   });
+
+
 
     // check(response, {
     //   'status is OK': (r) => r && r.status === grpc.StatusOK,
     // });
-
-    // console.log(JSON.stringify(response.message));
 
     client.close();
 
